@@ -1,0 +1,89 @@
+---
+title: "Durham College DATA1204 - Statistical Predictive Modeling Assignment 1"
+author: "Chinedu Onyeka"
+date: "September 27th, 2021"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+
+For the following questions, we will be using the carsDB dataset from Week #2 for this exercise  
+
+**Questions** (please use ggplot2 to construct all of your graphs. Post all graphs and answers in a word document in doc or docx format):  
+
+1. Construct a scatterplot with smoothing for mpg vs. disp  
+2. Construct a scatterplot with smoothing for mpg vs. hp  
+3. Construct a scatterplot with smoothing for mpg vs. wt  
+4. Please explain the following:  
+
+  a) Identifiable Trends for each of the three (3) scatterplots  
+  b) Any anomalies that you see for each of the three (3) scatterplots  
+
+
+Load Libraries
+```{r load-library, message = FALSE}
+library(ggplot2)
+```
+
+Load the data
+```{r}
+data_mtcars <- mtcars
+```
+
+```{r}
+head(data_mtcars, n = 10)
+```
+
+### *Question 1* :  Construct a scatterplot with smoothing for mpg vs. disp 
+```{r mpg_vs_disp, message = FALSE}
+g1 <- ggplot(data = data_mtcars, aes(x = disp, y = mpg)) + geom_point() + 
+  geom_smooth() + labs(title = "mpg vs disp") + theme_bw()
+g1
+```
+
+
+
+
+
+
+### *Question 2* :  Construct a scatterplot with smoothing for mpg vs. hp
+```{r mpg_vs_hp, message = FALSE}
+g2 <- ggplot(data = data_mtcars, aes(x = hp, y = mpg)) + geom_point() +
+  geom_smooth() + labs(title = "mpg vs hp") + theme_bw()
+g2
+```
+
+
+
+
+
+
+
+
+### *Question 3* : Construct a scatter plot with smoothing for mpg vs. wt
+```{r mpg_vs_wt, message = FALSE}
+g3 <- ggplot(data = data_mtcars, aes(x = wt, y = mpg)) + geom_point() +
+  geom_smooth() + labs(title = "mpg vs wt") + theme_bw()
+g3
+```
+
+
+### *Question 4* : Please explain the following:  
+
+a) Identifiable Trends for each of the three (3) scatter plots  
+
+Answer: From the plot above, it can be seen that there is a downward trend (negative correlation for each of the three scatterplots). This is inline with what one would think for example in plot 2 and 3 above.  
+For the third plot, the mpg (miles per gallon) for a vehicle would be negatively correlated with the weight of the vehicle which means that heavier vehicles would tend to perform poorly on gas and therefore have low mpg and vice - versa.  
+Also, for the second plot, vehicles with high hp(Gross horsepower) then to do poorly with gas as well and have low mpg. They produce more power and consume more gas or fuel, hence low on mpg.  
+
+b) Any anomalies that you see for each of the three (3) scatter plots  
+
+Answer: We can see from the graph that all points do not fall perfectly on the trend line. Some points even fall outside of the margin of error which goes to show that the inverse relationship is not perfect and some vehicles will tend to deviate from this relationship.
+
+
+
+
+
+
+
