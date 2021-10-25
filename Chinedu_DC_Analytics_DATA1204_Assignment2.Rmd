@@ -86,13 +86,13 @@ mean_diff <- mean_after - mean_before
 mu_diff <- 0
 SE_diff <- sqrt(SE_before**2 + SE_after**2)
 t <- (mean_diff - mu_diff)/SE_diff
-p_value <- round(2*pt(t, df, lower.tail = FALSE), 4)
-paste0("Since the p value is ", p_value, " which is greater than ", alpha, 
-       ", we do not reject the null hypothesis")
+p_value <- round(2*pt(abs(t), df, lower.tail = FALSE), 4)
+paste0("Since the p value is ", p_value, " which is less than ", alpha, 
+       ", we reject the null hypothesis")
 ```
 
 **Conclusion: **  
-From the hypothesis testing of the difference in means of the blood pressure of before and after, we can infer that there is insufficient statistical evidence to reject the null hypothesis that there is no difference in blood pressure before and after. Hence, we accept the null hypothesis at 0.05 level of significance that there is no difference in mean blood pressure of an individual before and after exercising regularly for the past 30 -days. i.e. An individual's blood pressure has not changed significantly after exercising regularly for the past 30 - days.
+From the hypothesis testing of the difference in means of the blood pressure of before and after, we can infer that there is sufficient statistical evidence to reject the null hypothesis that there is no difference in blood pressure before and after. Hence, we accept reject the null hypothesis at 0.05 level of significance that there is no difference in mean blood pressure of an individual before and after exercising regularly for the past 30 -days.
 
 
 
