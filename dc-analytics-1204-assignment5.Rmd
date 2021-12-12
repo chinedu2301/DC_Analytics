@@ -1,0 +1,103 @@
+---
+title: "DATA 1204 - Assignment5"
+author: "Chinedu Onyeka"
+date: "12/11/2021"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Load Libraries**
+
+```{r load-libraries, message=FALSE}
+# Load libraries
+library(tidyverse)
+```
+
+
+**Hypothesis Statement**  
+
+
+
+$H_{0}: \beta = 0$, coefficient $\beta$ of the dividend is zero and not statistically significant  
+$H_{1}: \beta \neq 0$, co-efficient $\beta$ of dividend is not equal to zero and is statistically significant  
+
+**Read the file**  
+```{r read-file, message=FALSE}
+url <- "https://raw.githubusercontent.com/chinedu2301/DC_Analytics/main/ols_stock.csv"
+stock <- read_csv(url)
+```
+
+**Check the head**  
+```{r head}
+# check the head
+head(stock)
+```
+**Check summary of the data**  
+```{r summary}
+# check the summary
+summary(stock)
+```
+
+```{r linear-regression}
+# fit the model
+linear_model <- lm(stock_return_scaled ~ dividend, data = stock) 
+
+# check the summary of the model
+summary(linear_model)
+```
+
+```{r get-coefficients}
+# get the model co-efficients
+summary(linear_model)$coefficient
+```
+
+**Insights**
+
+<li> The p-value for the dividend predictor is about 0.757925 > 0.05 (level of significance), therefore, we do not reject the null hypothesis. i.e we accept the null hypothesis that the co-efficient $\beta$ of the dividend predictor is zero and not statistically significant </li>
+<li> From the model summary and coefficients, we can see that the intercept is about 204.7576, while the slope of the model is -12.9732. Therefore, the equation of the model is $Y(Stock Return Scaled) = 204.7576 - 12.9732*X(dividend)$ </li> 
+<li> It can be seen that the model shows a negative relationship between stock_return_scaled and dividend. </li> 
+<li> Also, the R-Squared is about 0.2% which indicates a poor model.
+
+
+```{r r-squared}
+# get the R-squared
+
+summary(linear_model)$r.squared
+```
+
+From the R-Squared value, we see that the R square is 0.00204062 (0.2%) which indicates a poor model.  
+
+```{r predict}
+# Try a prediction
+newdata <- data.frame(dividend = 1000) # wrap the parameter
+predict(linear_model, newdata) # apply predict
+```
+
+**Variables to Include to help increase accuracy of the model**  
+Sometimes a single predictor may not be enough to predict the target variable. To improve accuracy, more features or variables may have to be added. In this case, I will add the marketcap, and earnings_ranking. We can run a model that includes those extra two features to see if the model accuracy will improve.
+
+```{r add-two-variables}
+# fit the model with two additional variables
+linear_model_more_variables <- lm(stock_return_scaled ~ 
+                                    dividend + marketcap + earnings_ranking, data = stock)
+
+# get the summary of the new model
+summary(linear_model_more_variables)
+```
+
+From the model summary, we can see that the R-Squared for the model has increased drastically from 0.2% to about 54.73%. Also, from the p-values, `marketcap` and `earnings_ranking` are statistically significant predictors of the dependent variable (stock_return_scaled)
+
+
+
+
+
+
+
+
+
