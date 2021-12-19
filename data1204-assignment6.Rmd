@@ -1,0 +1,176 @@
+---
+title: "DATA1204 - Assignment6"
+author: "Chinedu Onyeka"
+date: "12/18/2021"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Load Libraries**
+```{r load-libraries, message=FALSE}
+# load libraries
+library(tidyverse)
+```
+
+**Read the file**
+```{r read-file, message=FALSE}
+# read the file
+url <- "https://raw.githubusercontent.com/chinedu2301/DC_Analytics/main/MultiRegDataset.csv"
+hughes_dataset <- read_csv(url)
+```
+
+**Check the head**
+```{r head}
+# check the head
+head(hughes_dataset)
+```
+
+**Check the structure**
+```{r glimpse}
+# Check the datatype and structure of the dataset
+glimpse(hughes_dataset)
+```
+
+*There are 7 columns (variables) and 1,338 rows (observations) in the dataset.*  
+
+<br>
+**Descriptive Statistics**
+```{r statistics}
+summary(hughes_dataset)
+```
+
+*Age*
+```{r sd-age}
+sd(hughes_dataset$age)
+```
+
+The minimum age is 18 years while the maximum age is 64. The mean age is about 39 years and the standard deviation of age is about 14 years.  
+
+*bmi*  
+```{r}
+sd(hughes_dataset$bmi)
+```
+
+The minimum bmi is 16 while the maximum bmi is 53.10. The mean bmi is about 30.67 and the standard deviation of bmi is about 6.1.  
+
+*children*  
+```{r}
+sd(hughes_dataset$children)
+```
+The minimum number of children is 0 while the maximum number of children is 5. The mean number of children is 1 and the standard deviation of number of children is 1.  
+
+*sex*  
+There are 676 Males and 662 females in the dataset.  
+
+*smoker*  
+There are 274 who are smokers and 1064 who are not in the dataset.  
+
+**Histogram - expenses**  
+```{r histogram}
+# histogram
+hist(hughes_dataset$expenses, main = "Histogram of Expenses", xlab = "Expenses", col = "yellow")
+```
+
+
+**T-test**  
+
+*Hypothesis Testing*  
+Null hypothesis $H_{0}: \mu = 10,000$  
+Alternative hypothesis $H_{1}: \mu \neq 10,000$
+
+t-test
+```{r t-test}
+# t-test
+t.test(hughes_dataset$expenses, mu = 10000)
+```
+
+*The p-value is less than 0.05, so we reject the null hypothesis that the mean of expenses is equal to 10,000*  
+<br>
+**Simple Linear Regression**  
+y = Expenses, x = Smoker  
+Expenses = Intercept + slope * Smoker  
+
+*Train the model*
+
+```{r}
+# train the model  
+simple_model <- lm(expenses ~ smoker, data = hughes_dataset)  
+
+# get the summary
+summary(simple_model)
+```
+
+The "smoker-yes"is significant, and the R-squared is 61.98%  
+The simple linear regression model is $expenses = 8434.3 + 23616*smokeryes$  
+
+
+*Evaluate the model*  
+```{r plot-models-simple}
+par(mfrow = c(1, 2))
+# plot the fitted vs residual
+plot(fitted(simple_model), resid(simple_model), col = "grey", pch = 20,
+     xlab = "Fitted", ylab = "Residuals", main = "Fitted versus Residuals")
+abline(h = 0, col = "darkorange", lwd = 2)
+
+# Q-Q plot
+qqnorm(resid(simple_model), main = "Normal Q-Q Plot", col = "darkgrey")
+qqline(resid(simple_model), col = "dodgerblue", lwd = 2)
+```
+<br>
+**Multiple Linear Regression**  
+$yi = B0 + B1xi1 + B2xi2 + ... + Bpxip + E$ where i = 1,2, ..., n  
+
+*Hypothesis Statement*  
+$H_{0} : β1 = β2 = ... = βk = 0$
+$H_{1}:$ at least one $βi ≠ 0, i = 1, ..., k$  
+
+
+*Train the model*
+
+```{r}
+# train the model  
+multiple_model <- lm(expenses ~ ., data = hughes_dataset)  
+
+# get the summary
+summary(multiple_model)
+```
+
+*The R-squared is 75.09% for the multi-linear regression*  
+
+
+$expenses = -11941.6 + 256.8*age - 131.3*sexmale + 339.3*bmi + 475.7*children +$  
+$23847.5*smokeryes - 352.8* regionnorthwest - 1035.6*regionsoutheast -959.3*regionsouthwest$  
+
+*Evaluate the model*  
+```{r plot-models-multiple}
+par(mfrow = c(1, 2))
+# plot the fitted vs residual
+plot(fitted(multiple_model), resid(multiple_model), col = "grey", pch = 20,
+     xlab = "Fitted", ylab = "Residuals", main = "Fitted versus Residuals")
+abline(h = 0, col = "darkorange", lwd = 2)
+
+# Q-Q plot
+qqnorm(resid(multiple_model), main = "Normal Q-Q Plot", col = "darkgrey")
+qqline(resid(multiple_model), col = "dodgerblue", lwd = 2)
+```
+
+**Conclusion**  
+Smoking has a positive effect on the expenses for the simple linear regression. Also, other input variables helped in increasing the R-squared values for predicting the expenses.
+
+
+
+
+
+
+
+
+
+
+
+
+
